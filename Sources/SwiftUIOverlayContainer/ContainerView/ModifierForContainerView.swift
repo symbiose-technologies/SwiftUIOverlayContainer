@@ -22,13 +22,29 @@ struct ShowContainerViewModifier<V: View>: ViewModifier {
     @Environment(\.overlayContainerManager) var containerManager
     @State var identifiableViewID: UUID?
 
-    init(container: String, view: V, configuration: ContainerViewConfigurationProtocol, isPresented: Binding<Bool>, animated: Bool) {
+    let containerNameMatchBySubstring: Bool
+    
+    init(container: String, view: V, configuration: ContainerViewConfigurationProtocol, isPresented: Binding<Bool>, animated: Bool, containerNameMatchBySubstring: Bool = false) {
         self.container = container
         self.view = view
         self.configuration = configuration
         self._isPresented = isPresented
         self.animated = animated
+        self.containerNameMatchBySubstring = containerNameMatchBySubstring
     }
+    
+    var lastMatchingContainerName: String? {
+        containerManager.containerNames.last { $0.contains(container) }
+    }
+    
+    var resolvedContainerName: String {
+        if containerNameMatchBySubstring {
+            return lastMatchingContainerName ?? container
+        } else {
+            return container
+        }
+    }
+    
 
     func body(content: Content) -> some View {
         content
@@ -36,13 +52,14 @@ struct ShowContainerViewModifier<V: View>: ViewModifier {
                 if isPresented {
                     identifiableViewID = containerManager._show(
                         view: view,
-                        in: container,
+                        in: resolvedContainerName,
                         using: configuration,
                         isPresented: $isPresented
                     )
                 } else {
                     if let identifiableViewID = identifiableViewID {
-                        containerManager.dismiss(view: identifiableViewID, in: container, animated: animated)
+                        containerManager.dismiss(view: identifiableViewID,
+                                                 in: resolvedContainerName, animated: animated)
                     }
                 }
             }
@@ -76,6 +93,7 @@ public extension View {
         configuration: ContainerViewConfigurationProtocol,
         isPresented: Binding<Bool>,
         animated: Bool = true,
+        containerNameMatchBySubstring: Bool = false,
         @ViewBuilder content: () -> Content
     ) -> some View {
         self
@@ -85,7 +103,8 @@ public extension View {
                     view: content(),
                     configuration: configuration,
                     isPresented: isPresented,
-                    animated: animated
+                    animated: animated,
+                    containerNameMatchBySubstring: containerNameMatchBySubstring
                 )
             )
     }
@@ -98,6 +117,7 @@ public extension View {
         configuration: ContainerViewConfigurationProtocol,
         isPresented: Binding<Bool>,
         animated: Bool = true,
+        containerNameMatchBySubstring: Bool = false,
         content: Content
     ) -> some View {
         self
@@ -107,7 +127,8 @@ public extension View {
                     view: content,
                     configuration: configuration,
                     isPresented: isPresented,
-                    animated: animated
+                    animated: animated,
+                    containerNameMatchBySubstring: containerNameMatchBySubstring
                 )
             )
     }
@@ -130,6 +151,7 @@ public extension View {
         in overlayContainer: String,
         isPresented: Binding<Bool>,
         animated: Bool = true,
+        containerNameMatchBySubstring: Bool = false,
         content: Content
     ) -> some View {
         self
@@ -139,7 +161,8 @@ public extension View {
                     view: content,
                     configuration: content,
                     isPresented: isPresented,
-                    animated: animated
+                    animated: animated,
+                    containerNameMatchBySubstring: containerNameMatchBySubstring
                 )
             )
     }

@@ -31,7 +31,8 @@ import SwiftUI
 /// Because the Container Manager adopts the singleton pattern, you can directly call public methods such as show and dismiss through code even if you are not in the SwiftUI view.
 public final class ContainerManager: ContainerManagerLogger {
     var publishers: [String: ContainerViewPublisher] = [:]
-
+    var containerNames: [String] = []
+    
     private init(logger: SwiftUIOverlayContainerLoggerProtocol? = nil, debugLevel: Int = 0) {
         if logger == nil {
             self.logger = SwiftUIOverlayContainerDefaultLogger()
@@ -67,6 +68,7 @@ extension ContainerManager: ContainerManagement {
     /// Overlay containers will remove themselves from manager when the disappear ( onDisappear ).
     func removeContainer(for container: String) {
         publishers.removeValue(forKey: container)
+        containerNames.removeAll(where: { $0 == container })
         sendMessage(type: .info, message: "`\(container)` has been removed from manager", debugLevel: 2)
     }
 
@@ -99,8 +101,15 @@ extension ContainerManager: ContainerManagement {
         // Convert to reference type to support dumping
         let publisher = PassthroughSubject<OverlayContainerAction, Never>().share()
         publishers[container] = publisher
+        containerNames.append(container)
         return publisher
     }
+    
+    
+    func latestContainerMatchingSubstring(match substring: String) -> String? {
+        return nil
+    }
+    
 }
 
 // MARK: - Container View Management
@@ -131,6 +140,10 @@ extension ContainerManager: ContainerViewManagementForViewModifier {
         sendMessage(type: .info, message: "send view `\(type(of: view))` to container: `\(container)`", debugLevel: 2)
         return viewID
     }
+    
+    
+    
+    
 
     @discardableResult
     func _show<Content>(
@@ -140,6 +153,9 @@ extension ContainerManager: ContainerViewManagementForViewModifier {
     ) -> UUID? where Content: ContainerView {
         _show(view: containerView, in: container, using: containerView, isPresented: isPresented)
     }
+    
+    
+    
 }
 
 extension ContainerManager: ContainerViewManagementForEnvironment {
