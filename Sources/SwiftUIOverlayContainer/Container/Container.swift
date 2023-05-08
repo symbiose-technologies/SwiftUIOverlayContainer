@@ -192,7 +192,8 @@ struct OverlayContainer: View {
         // Prohibition of changing the containerName and the queueType
         .onChange(of: configuration.queueType, containerName, configuration.clipped) { _ in
             #if DEBUG
-            fatalError("❌ Can't change container name,queue type and clipped in runtime, this message only show in Debug mode.")
+//            fatalError("❌ Can't change container name,queue type and clipped in runtime, this message only show in Debug mode.")
+            print("❌ Can't change container name,queue type and clipped in runtime, this message only show in Debug mode.")
             #endif
         }
         .clipped(enable: configuration.clipped)

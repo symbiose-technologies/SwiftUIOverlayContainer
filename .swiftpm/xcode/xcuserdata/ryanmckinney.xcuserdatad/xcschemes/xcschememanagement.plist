@@ -7,12 +7,12 @@
 		<key>SwiftUIOverlayContainer.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>65</integer>
+			<integer>63</integer>
 		</dict>
 		<key>SwiftUIOverlayContainerTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>102</integer>
+			<integer>87</integer>
 		</dict>
 	</dict>
 </dict>
