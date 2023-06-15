@@ -120,7 +120,7 @@ extension ContainerQueueHandler {
         guard let (identifiableView, queue) = getIdentifiableView(id: id) else {
             return
         }
-
+        
         // setup animation
         var animation = Animation.disable
         if flag {
@@ -129,7 +129,8 @@ extension ContainerQueueHandler {
                 viewAnimation: identifiableView.configuration.animation
             )
         }
-
+        
+        
         // remove view
         switch queue {
         case .main:
@@ -137,9 +138,11 @@ extension ContainerQueueHandler {
         case .temporary:
             remove(view: id, from: .temporary, animation: .disable)
         }
-
+        
         // Set bind value (isPresented) to false
         identifiableView.isPresented?.wrappedValue = false
+
+        
     }
 
     /// Dismiss all views in both main queue and temporary queue
@@ -220,6 +223,26 @@ extension ContainerQueueHandler {
         case .temporary:
             if let index = self.tempQueue.firstIndex(where: { $0.id == id }) {
                 withAnimation(animation) {
+                    // swiftlint:disable:next redundant_discardable_let
+                    let _ = self.tempQueue.remove(at: index)
+                }
+            }
+        }
+    }
+    
+    /// Remove a identifiable view from specific queue, inside a transaction
+    func remove(view id: UUID, from queue: QueueType, transaction: Transaction) {
+        switch queue {
+        case .main:
+            if let index = self.mainQueue.firstIndex(where: { $0.id == id }) {
+                withTransaction(transaction) {
+                    // swiftlint:disable:next redundant_discardable_let
+                    let _ = self.mainQueue.remove(at: index)
+                }
+            }
+        case .temporary:
+            if let index = self.tempQueue.firstIndex(where: { $0.id == id }) {
+                withTransaction(transaction) {
                     // swiftlint:disable:next redundant_discardable_let
                     let _ = self.tempQueue.remove(at: index)
                 }
