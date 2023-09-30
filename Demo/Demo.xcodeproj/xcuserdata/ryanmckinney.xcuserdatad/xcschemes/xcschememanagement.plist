@@ -4,20 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SwiftUIOverlayContainer-Package.xcscheme_^#shared#^_</key>
+		<key>Demo (iOS).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>0</integer>
 		</dict>
-		<key>SwiftUIOverlayContainer.xcscheme_^#shared#^_</key>
+		<key>Demo (macOS).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>77</integer>
-		</dict>
-		<key>SwiftUIOverlayContainerTests.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>160</integer>
+			<integer>1</integer>
 		</dict>
 	</dict>
 </dict>

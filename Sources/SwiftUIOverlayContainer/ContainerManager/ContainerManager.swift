@@ -34,6 +34,8 @@ public final class ContainerManager: ContainerManagerLogger {
     var containerNames: [String] = []
     
     private init(logger: SwiftUIOverlayContainerLoggerProtocol? = nil, debugLevel: Int = 0) {
+        print("[ContainerManager] initialization")
+        
         if logger == nil {
             self.logger = SwiftUIOverlayContainerDefaultLogger()
         }

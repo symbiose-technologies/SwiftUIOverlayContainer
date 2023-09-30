@@ -44,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2245CC982A43B205007492B0 /* SwiftUIOverlayContainer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftUIOverlayContainer; path = ..; sourceTree = "<group>"; };
 		7606D22427E8462B009F96FE /* CustomMenuDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuDemo.swift; sourceTree = "<group>"; };
 		7646119927E2D63C005B3D18 /* DismissGestureDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissGestureDemo.swift; sourceTree = "<group>"; };
 		7646119C27E2FEE2005B3D18 /* BackgroundDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDemo.swift; sourceTree = "<group>"; };
@@ -66,7 +67,6 @@
 		76DE33A427E062AD00AD9419 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76DE33A627E062AD00AD9419 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		76DE33BE27E0630C00AD9419 /* Demo--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Demo--iOS--Info.plist"; sourceTree = "<group>"; };
-		76DE33C027E0631A00AD9419 /* SwiftUIOverlayContainer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftUIOverlayContainer; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +154,7 @@
 		76DE33BF27E0631A00AD9419 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				76DE33C027E0631A00AD9419 /* SwiftUIOverlayContainer */,
+				2245CC982A43B205007492B0 /* SwiftUIOverlayContainer */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -466,7 +466,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Demo (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VFBLFL665K;
+				DEVELOPMENT_TEAM = 3U588QPJ72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Demo--iOS--Info.plist";
@@ -482,7 +482,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatbobman.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.symbiose.overlay-Demo";
 				PRODUCT_NAME = Demo;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
@@ -500,7 +500,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Demo (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VFBLFL665K;
+				DEVELOPMENT_TEAM = 3U588QPJ72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Demo--iOS--Info.plist";
@@ -516,7 +516,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatbobman.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.symbiose.overlay-Demo";
 				PRODUCT_NAME = Demo;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
