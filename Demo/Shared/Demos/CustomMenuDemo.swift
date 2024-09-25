@@ -143,7 +143,11 @@ struct MenuView: View {
         .frame(width: 150)
         .background(Color.white)
         .padding(.top, 10)
-        .matchedGeometryEffect(id: id, in: namespace, properties: .position, anchor: anchor, isSource: false)
+        .matchedGeometryEffect(id: id,
+                               in: namespace,
+                               properties: .position,
+                               anchor: anchor, isSource: false
+        )
     }
 }
 

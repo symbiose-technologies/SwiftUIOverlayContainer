@@ -73,32 +73,32 @@ extension OverlayContainer {
     /// Composite background view of identifiable view in stacking mode, used in compositeContainerView method
     ///
     /// Including transition of background and dismiss action ( tapToDismiss is true )
-    @ViewBuilder
-    func compositeBackgroundFor(
-        identifiableView: IdentifiableContainerView,
-        containerConfiguration: ContainerConfigurationProtocol,
-        dismissAction: @escaping () -> Void
-    ) -> some View {
-        let backgroundStyle = ContainerBackgroundStyle.merge(
-            containerBackgroundStyle: containerConfiguration.backgroundStyle,
-            viewBackgroundStyle: identifiableView.configuration.backgroundStyle,
-            containerViewDisplayType: containerConfiguration.displayType
-        )
-        let backgroundTransition = identifiableView.configuration.backgroundTransitionStyle
-        #if !os(tvOS)
-        let tapToDismiss = Bool.merge(
-            containerTapToDismiss: containerConfiguration.tapToDismiss,
-            viewTapToDismiss: identifiableView.configuration.tapToDismiss,
-            containerType: containerConfiguration.displayType
-        )
-        #endif
-        backgroundStyle
-            .view()
-        #if !os(tvOS)
-            .if(tapToDismiss) { $0.onTapGesture(perform: dismissAction) }
-        #endif
-            .transition(backgroundTransition.transition)
-    }
+//    @ViewBuilder
+//    func compositeBackgroundFor(
+//        identifiableView: IdentifiableContainerView,
+//        containerConfiguration: ContainerConfigurationProtocol,
+//        dismissAction: @escaping () -> Void
+//    ) -> some View {
+//        let backgroundStyle = ContainerBackgroundStyle.merge(
+//            containerBackgroundStyle: containerConfiguration.backgroundStyle,
+//            viewBackgroundStyle: identifiableView.configuration.backgroundStyle,
+//            containerViewDisplayType: containerConfiguration.displayType
+//        )
+//        let backgroundTransition = identifiableView.configuration.backgroundTransitionStyle
+//        #if !os(tvOS)
+//        let tapToDismiss = Bool.merge(
+//            containerTapToDismiss: containerConfiguration.tapToDismiss,
+//            viewTapToDismiss: identifiableView.configuration.tapToDismiss,
+//            containerType: containerConfiguration.displayType
+//        )
+//        #endif
+//        backgroundStyle
+//            .view()
+//        #if !os(tvOS)
+//            .if(tapToDismiss) { $0.onTapGesture(perform: dismissAction) }
+//        #endif
+//            .transition(backgroundTransition.transition)
+//    }
 
     /// Composite the view displayed in the container.
     ///
@@ -148,39 +148,56 @@ extension OverlayContainer {
             dismissAction: dismissAction
         )
 
-        let compositingView = identifiableView.view
-            .containerViewShadow(shadowStyle)
-            .transition(transition)
-            .dismissGesture(gestureType: dismissGesture, dismissAction: dismissAction)
-            .autoDismiss(autoDismissStyle, dismissAction: dismissAction)
-            .dismissViewWhenIsPresentedIsFalse(identifiableView.isPresented, preform: dismissAction)
-            .environment(\.overlayContainer, environmentValue)
-
-        switch containerConfiguration.displayType {
-        case .horizontal, .vertical:
-            // view + gesture + shadow + transition + autoDismiss + isPresented
-            compositingView
-
-        case .stacking:
-            // background + backgroundDismiss + view + gesture + shadow + transition + autoDismiss + isPresented + alignment + inset
-            let backgroundOfIdentifiableView = compositeBackgroundFor(
-                identifiableView: identifiableView, containerConfiguration: containerConfiguration, dismissAction: dismissAction
+        
+        if containerConfiguration.displayType == .stacking {
+            StackingCompositeView(
+                identifiableView: identifiableView,
+                containerConfiguration: containerConfiguration,
+                queueHandler: queueHandler,
+                containerName: containerName,
+                containerFrame: containerFrame,
+                dismissAction: dismissAction,
+                environmentValue: environmentValue
             )
-
-            let alignment = Alignment.merge(
-                containerAlignment: containerConfiguration.alignment,
-                viewAlignment: identifiableView.configuration.alignment,
-                containerViewDisplayType: containerConfiguration.displayType
-            )
-            // the current context of view is ZStack (GenericStack)
-            backgroundOfIdentifiableView
-                .zIndex(timeStamp: identifiableView.timeStamp, order: containerConfiguration.displayOrder, background: true)
-                .ignoresSafeArea(type: containerConfiguration.bgIgnoresSafeArea)
+        } else {
+            let compositingView = identifiableView.view
+                .containerViewShadow(shadowStyle)
+                .transition(transition)
+                .dismissGesture(gestureType: dismissGesture, dismissAction: dismissAction)
+                .autoDismiss(autoDismissStyle, dismissAction: dismissAction)
+                .dismissViewWhenIsPresentedIsFalse(identifiableView.isPresented, preform: dismissAction)
+                .environment(\.overlayContainer, environmentValue)
+            
             compositingView
-                .padding(containerConfiguration.insets) // add insets for each view
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: alignment)
-                .zIndex(timeStamp: identifiableView.timeStamp, order: containerConfiguration.displayOrder, background: false)
         }
+        
+        
+
+//        switch containerConfiguration.displayType {
+//        case .horizontal, .vertical:
+//            // view + gesture + shadow + transition + autoDismiss + isPresented
+//            compositingView
+//
+//        case .stacking:
+//            // background + backgroundDismiss + view + gesture + shadow + transition + autoDismiss + isPresented + alignment + inset
+//            let backgroundOfIdentifiableView = compositeBackgroundFor(
+//                identifiableView: identifiableView, containerConfiguration: containerConfiguration, dismissAction: dismissAction
+//            )
+//
+//            let alignment = Alignment.merge(
+//                containerAlignment: containerConfiguration.alignment,
+//                viewAlignment: identifiableView.configuration.alignment,
+//                containerViewDisplayType: containerConfiguration.displayType
+//            )
+//            // the current context of view is ZStack (GenericStack)
+//            backgroundOfIdentifiableView
+//                .zIndex(timeStamp: identifiableView.timeStamp, order: containerConfiguration.displayOrder, background: true)
+//                .ignoresSafeArea(type: containerConfiguration.bgIgnoresSafeArea)
+//            compositingView
+//                .padding(containerConfiguration.insets) // add insets for each view
+//                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: alignment)
+//                .zIndex(timeStamp: identifiableView.timeStamp, order: containerConfiguration.displayOrder, background: false)
+//        }
     }
 }
 

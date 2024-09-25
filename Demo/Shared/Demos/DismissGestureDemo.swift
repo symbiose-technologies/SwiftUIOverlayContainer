@@ -62,7 +62,8 @@ extension DismissGestureDemo {
             .init(gesture: .swipeUp, description: "SwipeUpGesture"),
             .init(gesture: .swipeLeft, description: "SwipeLeftGesture"),
             .init(gesture: .swipeRight, description: "SwipeRightGesture"),
-            .init(gesture: .swipeDown, description: "SwipeDownGesture")
+            .init(gesture: .swipeDown, description: "SwipeDownGesture"),
+            .init(gesture: .interactiveSwipe(axes: InteractiveDismissal.ClosableAxes.allCases), description: "Swipe Anywhere")
         ]
     }
 }

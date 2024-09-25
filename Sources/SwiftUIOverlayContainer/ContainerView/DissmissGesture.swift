@@ -37,6 +37,7 @@ public enum ContainerViewDismissGesture {
     case longPress(Double)
     case customGesture(AnyGesture<Void>)
     case disable
+    case interactiveSwipe(axes: [InteractiveDismissal.ClosableAxes])
 }
 
 extension ContainerViewDismissGesture {
@@ -82,6 +83,9 @@ extension ContainerViewDismissGesture {
                     }
                 }
                 .eraseToAnyGestureForDismiss()
+        case .interactiveSwipe(let axes):
+            return TapGesture(count: 1).onEnded { _ in dismissAction() }.eraseToAnyGestureForDismiss()
+            
         }
         #endif
     }
@@ -169,9 +173,16 @@ extension View {
     ///          .dismissGesture(gestureType:gesture, dismissAction: some action)
     ///
     @ViewBuilder
-    func dismissGesture(gestureType: ContainerViewDismissGesture, dismissAction: @escaping () -> Void) -> some View {
-        if let gesture = gestureType.generateGesture(with: dismissAction) {
-            self.gesture(gesture)
-        } else { self }
+    func dismissGesture(gestureType: ContainerViewDismissGesture,
+                        dismissAction: @escaping () -> Void,
+                        onPartialClose: InteractiveDismissal.PartialDismissalCallback? = nil) -> some View {
+        self
+            .modifier(DismissGestureModifier(gestureType: gestureType,
+                                                        dismissAction: dismissAction,
+                                                        onPartialClose: onPartialClose))
+        
+//        if let gesture = gestureType.generateGesture(with: dismissAction) {
+//            self.gesture(gesture)
+//        } else { self }
     }
 }
